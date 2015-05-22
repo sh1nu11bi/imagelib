@@ -1,6 +1,7 @@
 package icolib;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -16,7 +17,7 @@ public class Ico {
 	private List<BufferedImage> images = new ArrayList<BufferedImage>();
 	
 	public Ico(File file) throws Exception {
-		this(new FileInputStream(file));
+		this(new BufferedInputStream(new FileInputStream(file)));
 	}
 	
 	public Ico(InputStream in) throws Exception {
@@ -29,7 +30,7 @@ public class Ico {
 		assert dis.readShort() == 0; // always 0
 		assert dis.readShort() == 1; // .ico
 		
-		short totalImages = dis.readShort();
+		short totalImages = (short) (dis.readShort() + 1);
 		
 		int pos = 6;
 		
