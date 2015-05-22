@@ -11,6 +11,13 @@ import javax.imageio.ImageIO;
 import com.google.common.io.LittleEndianDataOutputStream;
 
 public class IcoEncoder {
+
+	public static void encode(BufferedImage read, OutputStream os) {
+		List<BufferedImage> images = new ArrayList<BufferedImage>();
+		images.add(read);
+		
+		encode(read, os);
+	}
 	
 	public static void encode(List<BufferedImage> images, OutputStream os) throws Exception {
 		LittleEndianDataOutputStream dos = new LittleEndianDataOutputStream(os);
