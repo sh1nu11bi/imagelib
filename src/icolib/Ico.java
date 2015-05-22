@@ -3,7 +3,6 @@ package icolib;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -15,9 +14,7 @@ import javax.imageio.ImageIO;
 import com.google.common.io.LittleEndianDataInputStream;
 
 public class Ico {
-	
-	private List<BufferedImage> images = new ArrayList<BufferedImage>();
-	
+		
 	public Ico(File file) throws Exception {
 		this(new BufferedInputStream(new FileInputStream(file)));
 	}
@@ -38,6 +35,8 @@ public class Ico {
 		short totalImages = dis.readShort();
 		
 		int pos = 6;
+		
+		List<Image> images = new ArrayList<Image>();
 		
 		for (short i = 0; i < totalImages; i++) {
 			int width = dis.readByte();
@@ -65,26 +64,47 @@ public class Ico {
 			int length = dis.readInt();
 			int offset = dis.readInt();
 			
+			images.add(new Image(length, offset));
+			
 			pos += 8;
-			
+		}
+		
+		for (int i = 0; i < images.size(); i++) {
+			Image image = images.get(i);
 			dis.reset();
-			dis.skip(offset);
+			dis.skip(image.offset);
 			
-			byte[] image = new byte[length];
-			dis.readFully(image);
-			
-			pos += length;
-			
-			ByteArrayInputStream bais = new ByteArrayInputStream(image);
+			byte[] bImage = new byte[image.length];
+			dis.readFully(bImage);
+					
+			ByteArrayInputStream bais = new ByteArrayInputStream(bImage);
 			BufferedImage bufferedImage = ImageIO.read(bais);
-			images.add(bufferedImage);
+			
+			image.setImage(bufferedImage);
 			
 			if (bufferedImage != null) {
 				ImageIO.write(bufferedImage, "png", new File("test" + i + ".png"));
 			}
-
-			dis.reset();
-			dis.skip(pos);
+		}
+	}
+	
+	public class Image {
+		
+		private int length;
+		private int offset;
+		private BufferedImage image;
+		
+		public Image(int length, int offset) {
+			this.length = length;
+			this.offset = offset;
+		}
+		
+		public void setImage(BufferedImage image) {
+			this.image = image;
+		}
+		
+		public BufferedImage getImage() {
+			return this.image;
 		}
 	}
 
