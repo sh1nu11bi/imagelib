@@ -16,6 +16,8 @@ public class Ico {
 	}
 	
 	public Ico(DataInputStream dis) throws Exception {
+		dis.mark(Integer.MAX_VALUE);
+		
 		assert dis.readShort() == 0; // always 0
 		assert dis.readShort() == 1; // .ico
 		
@@ -42,6 +44,11 @@ public class Ico {
 			
 			int length = dis.readInt();
 			int offset = dis.readInt();
+			dis.reset();
+			dis.skip(offset);
+			
+			byte[] image = new byte[length];
+			dis.readFully(image);
 		}
 	}
 
