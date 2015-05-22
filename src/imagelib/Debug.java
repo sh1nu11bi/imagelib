@@ -1,5 +1,7 @@
 package imagelib;
 
+import imagelib.ico.IcoDecoder;
+
 import java.io.File;
 
 public class Debug {

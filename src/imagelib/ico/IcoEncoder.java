@@ -1,4 +1,4 @@
-package imagelib;
+package imagelib.ico;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
