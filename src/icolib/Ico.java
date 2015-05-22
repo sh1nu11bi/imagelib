@@ -27,10 +27,13 @@ public class Ico {
 	public Ico(DataInputStream dis) throws Exception {
 		dis.mark(Integer.MAX_VALUE);
 		
-		assert dis.readShort() == 0; // always 0
-		assert dis.readShort() == 1; // .ico
+		short first = dis.readShort();
+		assert first == 0; // always 0
+
+		short format = dis.readShort();
+		assert format == 1; // .ico
 		
-		short totalImages = (short) (dis.readShort() + 1);
+		short totalImages = dis.readShort();
 		
 		int pos = 6;
 		
