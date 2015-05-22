@@ -15,15 +15,15 @@ import com.google.common.io.LittleEndianDataInputStream;
 
 public class IcoDecoder {
 		
-	public IcoDecoder(File file) throws Exception {
-		this(new BufferedInputStream(new FileInputStream(file)));
+	public static List<Image> decode(File file) throws Exception {
+		return decode(new BufferedInputStream(new FileInputStream(file)));
 	}
 	
-	public IcoDecoder(InputStream in) throws Exception {
-		this(new LittleEndianDataInputStream(in));
+	public static List<Image> decode(InputStream in) throws Exception {
+		return decode(new LittleEndianDataInputStream(in));
 	}
 	
-	public IcoDecoder(LittleEndianDataInputStream dis) throws Exception {
+	public static List<Image> decode(LittleEndianDataInputStream dis) throws Exception {
 		dis.mark(Integer.MAX_VALUE);
 		
 		short first = dis.readShort();
@@ -86,9 +86,11 @@ public class IcoDecoder {
 				ImageIO.write(bufferedImage, "png", new File("test" + i + ".png"));
 			}
 		}
+		
+		return images;
 	}
 	
-	public class Image {
+	public static class Image {
 		
 		private int length;
 		private int offset;
