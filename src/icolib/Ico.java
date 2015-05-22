@@ -37,7 +37,7 @@ public class Ico {
 		
 		short totalImages = dis.readShort();
 		
-		int pos = 5;
+		int pos = 6;
 		
 		for (short i = 0; i < totalImages; i++) {
 			System.out.println("loop " + (i + 1));
