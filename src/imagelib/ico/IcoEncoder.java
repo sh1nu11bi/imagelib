@@ -12,11 +12,11 @@ import com.google.common.io.LittleEndianDataOutputStream;
 
 public class IcoEncoder {
 
-	public static void encode(BufferedImage read, OutputStream os) {
+	public static void encode(BufferedImage image, OutputStream os) throws Exception {
 		List<BufferedImage> images = new ArrayList<BufferedImage>();
-		images.add(read);
+		images.add(image);
 		
-		encode(read, os);
+		encode(images, os);
 	}
 	
 	public static void encode(List<BufferedImage> images, OutputStream os) throws Exception {
