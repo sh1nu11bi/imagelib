@@ -109,6 +109,8 @@ public class IcoDecoder {
 			}
 		}
 		
+		dis.close();
+		
 		return images;
 	}
 	
