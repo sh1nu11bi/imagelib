@@ -56,7 +56,6 @@ public class IcoDecoder {
 		if (format != 1) {
 			throw new Exception("No icon format detected" + (format == 2 ? ", is .cur" : ""));
 		}
-		assert format == 1; // .ico
 		
 		short totalImages = dis.readShort();
 				
