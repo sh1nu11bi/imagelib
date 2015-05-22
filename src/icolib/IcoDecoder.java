@@ -14,15 +14,37 @@ import javax.imageio.ImageIO;
 import com.google.common.io.LittleEndianDataInputStream;
 
 public class IcoDecoder {
-		
+	
+	public static List<Image> decode(byte[] buffer) throws Exception {
+		return decode(new ByteArrayInputStream(buffer));
+	}
+	
+	/**
+	 * Decode image from file
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<Image> decode(File file) throws Exception {
 		return decode(new BufferedInputStream(new FileInputStream(file)));
 	}
 	
+	/**
+	 * Decode image from InputStream
+	 * @param in
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<Image> decode(InputStream in) throws Exception {
 		return decode(new LittleEndianDataInputStream(in));
 	}
 	
+	/**
+	 * Decode image from LittleEndianInputStream
+	 * @param dis
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<Image> decode(LittleEndianDataInputStream dis) throws Exception {
 		dis.mark(Integer.MAX_VALUE);
 		
