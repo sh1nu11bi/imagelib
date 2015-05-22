@@ -13,17 +13,17 @@ import javax.imageio.ImageIO;
 
 import com.google.common.io.LittleEndianDataInputStream;
 
-public class Ico {
+public class IcoDecoder {
 		
-	public Ico(File file) throws Exception {
+	public IcoDecoder(File file) throws Exception {
 		this(new BufferedInputStream(new FileInputStream(file)));
 	}
 	
-	public Ico(InputStream in) throws Exception {
+	public IcoDecoder(InputStream in) throws Exception {
 		this(new LittleEndianDataInputStream(in));
 	}
 	
-	public Ico(LittleEndianDataInputStream dis) throws Exception {
+	public IcoDecoder(LittleEndianDataInputStream dis) throws Exception {
 		dis.mark(Integer.MAX_VALUE);
 		
 		short first = dis.readShort();
