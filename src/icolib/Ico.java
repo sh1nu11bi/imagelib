@@ -22,7 +22,26 @@ public class Ico {
 		short images = dis.readShort();
 		
 		for (short i = 0; i < images; i++) {
+			int width = dis.readByte();
+			int height = dis.readByte();
 			
+			if (width == 0) {
+				width = 256;
+			}
+			
+			if (height == 0) {
+				height = 256;
+			}
+			
+			byte palette = dis.readByte();
+			
+			assert dis.readByte() == 0; // always 0
+			
+			short colorpanes = dis.readShort();
+			short bitsperpixel = dis.readShort();
+			
+			int length = dis.readInt();
+			int offset = dis.readInt();
 		}
 	}
 
