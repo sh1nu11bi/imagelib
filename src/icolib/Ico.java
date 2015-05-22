@@ -40,7 +40,6 @@ public class Ico {
 		int pos = 6;
 		
 		for (short i = 0; i < totalImages; i++) {
-			System.out.println("loop " + (i + 1));
 			int width = dis.readByte();
 			int height = dis.readByte();
 			
@@ -77,8 +76,13 @@ public class Ico {
 			pos += length;
 			
 			ByteArrayInputStream bais = new ByteArrayInputStream(image);
-			images.add(ImageIO.read(bais));
+			BufferedImage bufferedImage = ImageIO.read(bais);
+			images.add(bufferedImage);
 			
+			if (bufferedImage != null) {
+				ImageIO.write(bufferedImage, "png", new File("test" + i + ".png"));
+			}
+
 			dis.reset();
 			dis.skip(pos);
 		}
