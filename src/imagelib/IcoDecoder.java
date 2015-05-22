@@ -55,17 +55,13 @@ public class IcoDecoder {
 		assert format == 1; // .ico
 		
 		short totalImages = dis.readShort();
-		
-		int pos = 6;
-		
+				
 		List<Image> images = new ArrayList<Image>();
 		
 		for (short i = 0; i < totalImages; i++) {
 			int width = dis.readByte();
 			int height = dis.readByte();
-			
-			pos += 2;
-			
+						
 			if (width == 0) {
 				width = 256;
 			}
@@ -80,15 +76,11 @@ public class IcoDecoder {
 			
 			short colorpanes = dis.readShort();
 			short bitsperpixel = dis.readShort();
-			
-			pos += 6;
-			
+						
 			int length = dis.readInt();
 			int offset = dis.readInt();
 			
 			images.add(new Image(length, offset));
-			
-			pos += 8;
 		}
 		
 		for (int i = 0; i < images.size(); i++) {
