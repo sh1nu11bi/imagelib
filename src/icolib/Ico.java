@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.google.common.io.LittleEndianDataInputStream;
+
 public class Ico {
 	
 	private List<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -21,10 +23,10 @@ public class Ico {
 	}
 	
 	public Ico(InputStream in) throws Exception {
-		this(new DataInputStream(in));
+		this(new LittleEndianDataInputStream(in));
 	}
 	
-	public Ico(DataInputStream dis) throws Exception {
+	public Ico(LittleEndianDataInputStream dis) throws Exception {
 		dis.mark(Integer.MAX_VALUE);
 		
 		short first = dis.readShort();
@@ -35,9 +37,10 @@ public class Ico {
 		
 		short totalImages = dis.readShort();
 		
-		int pos = 6;
+		int pos = 5;
 		
 		for (short i = 0; i < totalImages; i++) {
+			System.out.println("loop " + (i + 1));
 			int width = dis.readByte();
 			int height = dis.readByte();
 			
@@ -70,6 +73,8 @@ public class Ico {
 			
 			byte[] image = new byte[length];
 			dis.readFully(image);
+			
+			pos += length;
 			
 			ByteArrayInputStream bais = new ByteArrayInputStream(image);
 			images.add(ImageIO.read(bais));
