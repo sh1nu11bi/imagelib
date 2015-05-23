@@ -62,8 +62,8 @@ public class IcoDecoder {
 		List<Image> images = new ArrayList<Image>();
 		
 		for (short i = 0; i < totalImages; i++) {
-			int width = dis.readByte();
-			int height = dis.readByte();
+			int width = dis.readUnsignedByte();
+			int height = dis.readUnsignedByte();
 						
 			if (width == 0) {
 				width = 256;
