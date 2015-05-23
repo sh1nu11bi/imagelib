@@ -3,6 +3,8 @@ package imagelib.ico;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -89,24 +91,49 @@ public class IcoDecoder {
 		for (int i = 0; i < images.size(); i++) {
 			Image image = images.get(i);
 			dis.reset();
-			dis.skip(image.offset);
+			dis.skip(image.offset);		
 			
-			byte[] bImage = new byte[image.length];
-			dis.readFully(bImage);
-					
-			ByteArrayInputStream bais = new ByteArrayInputStream(bImage);
-			BufferedImage bufferedImage = ImageIO.read(bais);
+			int info = dis.readInt();
 			
-			image.setImage(bufferedImage);
-			
-			if (bufferedImage != null) {
-				ImageIO.write(bufferedImage, "png", new File("test" + i + ".png"));
+			if (info == 0x28) {
+				System.out.println("bitmap");
+				byte[] bImage = new byte[image.length - 4];
+				dis.readFully(bImage, 0, image.length - 4);
+				
+				ByteArrayOutputStream baos = new ByteArrayOutputStream(image.length);
+				DataOutputStream dos = new DataOutputStream(baos);
+				dos.writeInt(info);
+				dos.write(bImage);
+				
+				ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+				BufferedImage bufferedImage = ImageIO.read(bais);
+				
+				image.setImage(bufferedImage);
+				
+				if (bufferedImage != null) {
+					ImageIO.write(bufferedImage, "png", new File("test" + i + ".png"));
+				}
+			} else if (info == 0x474E5089) {
+				System.out.println("png");
+			} else {
+				System.out.println(Integer.toHexString(info));
 			}
 		}
 		
 		dis.close();
 		
 		return images;
+	}
+	
+	public static byte[] toBytes(int i) {
+		byte[] result = new byte[4];
+
+		result[0] = (byte) (i >> 24);
+		result[1] = (byte) (i >> 16);
+		result[2] = (byte) (i >> 8);
+		result[3] = (byte) (i /* >> 0 */);
+
+		return result;
 	}
 	
 	public static class Image {
